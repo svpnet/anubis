@@ -29,6 +29,7 @@ jobs:
         with:
           cache: false
           target: wasm32-unknown-unknown
+          build-warnings: warn
 
       - uses: bytecodealliance/actions/wasmtime/setup@9152e710e9f7182e4c29ad218e4f335a7b203613 # v1.1.3
 
