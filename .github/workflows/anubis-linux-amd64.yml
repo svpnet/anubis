@@ -48,8 +48,11 @@ jobs:
         run: |
           version="v$(cat VERSION)+${GITHUB_SHA:0:12}"
           binary=var/anubis-linux-amd64
-          go build -trimpath -ldflags "-s -w -X github.com/TecharoHQ/anubis.Version=$version" -o "$binary" ./cmd/anubis
-          test "$("$binary" --version)" = "Anubis $version"
+          # Anubis prefers Go's VCS-derived module version to the linker value.
+          go build -buildvcs=false -trimpath -ldflags "-s -w -X github.com/TecharoHQ/anubis.Version=$version" -o "$binary" ./cmd/anubis
+          actual_version=$("$binary" --version)
+          printf '%s\n' "$actual_version"
+          test "$actual_version" = "Anubis $version"
           file "$binary"
           sha256sum "$binary"
 
